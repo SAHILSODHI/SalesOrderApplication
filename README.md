@@ -1,7 +1,7 @@
 # SalesOrderApplication
 An application for customer and product sales
 
-On Mac, install or upgrade Homebrew
+On Mac, install or upgrade Homebrew at: 
 https://clojure.org/guides/getting_started
 
 On Windows, use the Windows Powershell to install and run Clojure.
