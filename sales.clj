@@ -34,8 +34,8 @@
 
 (defn getCustomerName [k customerId productID itemCounts]
   (print k ": [")
-  (print (get (get customerMap (Integer/parseInt customerId)) 0) " ")
-  (print (get (get productMap (Integer/parseInt productID)) 0) " ")
+  (print (get (get customerMap (Integer/parseInt customerId)) 0) ",")
+  (print (get (get productMap (Integer/parseInt productID)) 0) ",")
   (println itemCounts "]")
   )
 
@@ -47,8 +47,17 @@
   (doall (map (fn [[k v]] (refactor k v)) args))
   )
 
-(defn printData [args]
-  (doall (map (fn [[k v]] (println k ":" v)) args))
+(defn redoPrint [printKey printValue entityPrint]
+  (if (= entityPrint "custPrint")
+    (do (println printKey": [" (get printValue 0) "," (get printValue 1) "," (get printValue 2) "]"))
+    )
+  (if (= entityPrint "prodPrint")
+    (do (println printKey": [" (get printValue 0) "," (get printValue 1) "]"))
+    )
+  )
+
+(defn printData [args entityPrint]
+  (doall (map (fn [[k v]] (redoPrint k v entityPrint)) args))
   )
 
 (defn customerProducts [customerID]
@@ -103,12 +112,14 @@
   (println "\n***Sales Menu***\n\n1. Display Customer Table\n2. Display Product Table\n3. Display Sales Table\n4. Total Sales for Customer\n5. Total Count for Product\n6. Exit\n\nEnter an option?")
   (def userChoice (read-line))
   (case userChoice
-    "1" (printData (sortMap customerMap))
-    "2" (printData (sortMap productMap))
+    "1" (printData (sortMap customerMap) "custPrint")
+    "2" (printData (sortMap productMap) "prodPrint")
     "3" (printSalesData (sortMap salesMap))
     "4" (doall (customerSales))
     "5" (doall (productCount))
-    "6" (exit))
+    "6" (exit)
+    (print "Please input a number between 1-6")
+    )
   (if (not= "6" userChoice)
     (recur)))
 (ShowMenu)
